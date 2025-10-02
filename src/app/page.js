@@ -6,7 +6,7 @@ import JoinUs from "@/HomePageComponents/JoinUs";
 
 export default function Home() {
   return (
-    <div>Hello
+    <div>
     <Banner></Banner>
     <DestinationCard></DestinationCard>
     <CounterSection></CounterSection>
