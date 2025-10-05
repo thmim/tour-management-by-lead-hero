@@ -3,7 +3,7 @@ export default function AboutPage() {
     <div className="max-w-6xl mx-auto px-6 py-20 text-center">
       {/* Title */}
       <h1 className="text-5xl font-extrabold text-orange-500 mb-6 tracking-tight">
-        About <span className="text-gray-800">Tourease</span>
+        About <span className="text-gray-800">TourEase</span>
       </h1>
 
       {/* Divider */}
@@ -11,26 +11,20 @@ export default function AboutPage() {
 
       {/* Main Description */}
       <p className="text-gray-700 text-lg leading-relaxed mb-6">
-        Welcome to <span className="font-semibold text-orange-600">Tourease</span>, your trusted platform to discover
-        amazing destinations and book stays with ease. Whether it’s a cozy apartment,
-        a luxury villa, or a unique homestay — we make it effortless to find the perfect spot.
+        <span className="font-semibold text-orange-600">TourEase</span> is an AI-powered travel management platform that helps you discover destinations, plan trips efficiently, and book tours effortlessly. Whether you’re looking for a cozy apartment, a luxury villa, or a unique local experience, we make every trip seamless and enjoyable.
       </p>
 
       <p className="text-gray-700 text-lg leading-relaxed mb-6">
-        Our mission is to connect travelers with verified hosts and authentic experiences.
-        Every listing is curated to ensure comfort, safety, and an unforgettable stay.
-        With Tourease, planning your next adventure is simple, fast, and reliable.
+        Our smart AI system analyzes your preferences, budget, and interests to suggest the perfect destinations. Solo travelers can also find compatible companions through our Travel Companion Match, ensuring safety and fun along the way.
       </p>
 
       <p className="text-gray-700 text-lg leading-relaxed mb-6">
-        From solo trips to family vacations, Tourease helps you explore the world
-        without hassle. Browse, book, and enjoy your journey — all from one platform.
+        From eco-friendly travel options to connecting with local businesses, TourEase brings together everything you need for a memorable journey. all in one platform.
       </p>
 
       <p className="text-gray-700 text-lg leading-relaxed">
-        Your next adventure is waiting. Let Tourease guide you there.
+        Let TourEase guide your next adventure and make exploring the world simple, safe, and unforgettable.
       </p>
-
     </div>
   );
 }
