@@ -1,4 +1,4 @@
-// lib/firebase.js
+
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 

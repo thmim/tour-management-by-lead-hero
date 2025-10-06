@@ -1,3 +1,76 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #1E40AF;
+  --color-secondary: #3B82F6;
+  --color-base-100: #F3F4F6;
+  --color-base-200: #111827;
+  --color-base-300: #000000;
+  --color-accent: #FF6900;
+  --color-accent-content: #ffffff;
+  --color-neutral: #ffffff;
+
+
+}
+
+/* Global font for body text */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Global font for headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
+
+
+/* 
+  light theme 
+
+  Primary (#1E40AF – Indigo Blue)
+
+Secondary (#3B82F6 – Sky Blue)
+
+Accent (#F97316 – Vibrant Orange)
+
+Background (#F9FAFB – Light Gray/White)
+
+Text (#111827 – Dark Gray/Black) 
+card bg color color neutral*/
+
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  --color-primary: #1E3A8A;
+  --color-secondary: #3B82F6;
+  --color-base-100: #F4F7FB;
+  --color-base-200: #F3F4F6;
+  --color-base-300: #000000;
+  --color-accent: #FF6900;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1E293B;
+
+}
+
+/*Dark theme
+  
+  Primary (#1E3A8A – Deep Blue)
+
+Secondary (#3B82F6 – Sky Blue)
+
+Accent (#FACC15 – Amber)
+
+Background (#0F172A – Dark Navy)
+
+Text (#F3F4F6 – Light Gray/White) 
+card bg color color neutral
+*/
+

@@ -66,7 +66,7 @@ export default function DestinationCard() {
           ) : (
             destinations.map((dest) => (
               <Link
-                href={`/destinations-details/${dest._id}`}
+                href={`/all-destinations/${dest._id}`}
                 key={dest._id}
                 className={`relative w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-[300px] sm:h-[360px] lg:h-[400px] rounded-2xl overflow-hidden shadow-lg cursor-pointer group flex-shrink-0 transition-transform
                   ${destinations.indexOf(dest) % 2 === 0
