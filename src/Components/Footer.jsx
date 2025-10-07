@@ -5,14 +5,16 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-orange-500 to-red-500 text-white py-10 px-6">
+    <footer className="bg-black opacity-80 text-white py-20 px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 items-center text-center sm:text-left">
-        
+
         {/* Left Section */}
         <div className="flex flex-col space-y-3">
-          <div className="flex items-center justify-center sm:justify-start space-x-2">
-            <Globe className="w-6 h-6 text-white" />
-            <h1 className="text-3xl font-bold pb-2">TourEase</h1>
+          <div className="flex items-center justify-center sm:justify-start gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+              <Globe className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <span className="text-xl sm:text-2xl font-bold text-white">TourEase</span>
           </div>
 
           <p className="text-sm opacity-80 text-center sm:text-left">
@@ -22,13 +24,13 @@ const Footer = () => {
 
         {/* Middle Section (Navigation) */}
         <nav className="flex flex-col space-y-2 text-sm font-medium">
-          <Link href="/about" className="hover:underline">
+          <Link href="/about" className="hover:underline hover:text-accent">
             About Us
           </Link>
-          <Link href="/contact" className="hover:underline">
+          <Link href="/contact" className="hover:underline hover:text-accent">
             Contact Us
           </Link>
-          <Link href="/terms-condition" className="hover:underline">
+          <Link href="/terms-condition" className="hover:underline hover:text-accent">
             Terms & Conditions
           </Link>
         </nav>

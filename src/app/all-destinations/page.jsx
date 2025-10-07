@@ -3,17 +3,16 @@
 import AllDestHeroSection from "@/destinatios/AllDestHeroSection";
 import AsideTourFilter from "@/destinatios/AsideTourFilter";
 import DestCard from "@/destinatios/DestCard";
-import useAxiosPublic from "@/Hooks/axiosPublic";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { IoFilter } from "react-icons/io5";
+import axios from "axios";
 
 const AllDestinationsPage = () => {
-  const axiosPublic = useAxiosPublic();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalData, setTotalData] = useState(0);
   const [destinations, setDestinations] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({
     whereTo: "",
     date: "",
@@ -22,64 +21,67 @@ const AllDestinationsPage = () => {
     types: [],
   });
 
-  const updateFilter = (newFilter) => {
+  const updateFilter = useCallback((newFilter) => {
     setFilters((prev) => ({ ...prev, ...newFilter }));
-  };
+    setPage(1);
+  }, []);
 
   useEffect(() => {
     const fetchTours = async () => {
+      setLoading(true);
       try {
         const params = new URLSearchParams();
 
-        // pagination
-        params.append("page", page);
-
-        // hero filters
         if (filters.whereTo) params.append("whereTo", filters.whereTo);
         if (filters.date) params.append("date", filters.date);
         if (filters.guest) params.append("guest", filters.guest);
 
-        // aside filters
-        if (filters.priceRange) {
+        if (filters.priceRange && filters.priceRange.length === 2) {
           params.append("minPrice", filters.priceRange[0]);
           params.append("maxPrice", filters.priceRange[1]);
         }
 
-        if (filters.types.length > 0) {
+        if (filters.types && filters.types.length > 0) {
           params.append("types", filters.types.join(","));
         }
 
-        const res = await axiosPublic.get(`/all-destinations?${params.toString()}`);
+        params.append("page", page);
+        params.append("limit", 9);
 
-        setTotalData(res.data.totalCount || 0);
-        setTotalPages(Math.ceil(res.data.totalCount / 9));
-        setDestinations(res.data.destinations || []);
+        const res = await axios.get(`/api/destinations?${params.toString()}`);
+
+        if (res.data) {
+          setDestinations(res.data.destinations || res.data || []);
+          setTotalData(res.data.totalCount || res.data.length || 0);
+          setTotalPages(res.data.totalPages || Math.ceil((res.data.length || 0) / 9));
+        }
       } catch (error) {
         console.error("Error fetching destinations:", error);
+        setDestinations([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTours();
-  }, [filters.whereTo,
+  }, [
+    filters.whereTo,
     filters.date,
     filters.guest,
     filters.priceRange,
     filters.types,
     page,
-    axiosPublic,]);
+  ]);
 
   return (
     <div>
-      {/* Hero Section */}
       <AllDestHeroSection updateFilter={updateFilter} />
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 mt-10">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <AsideTourFilter updateFilter={updateFilter} />
 
           <main className="lg:col-span-3">
-            {/* Mobile filter button */}
             <div className="md:hidden flex justify-end mb-4">
               <label
                 htmlFor="filter-drawer"
@@ -90,43 +92,56 @@ const AllDestinationsPage = () => {
               </label>
             </div>
 
-            {/* Destinations grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {destinations.map((dest) => (
-                <DestCard tour={dest} key={dest._id} />
-              ))}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex justify-between items-center mt-4 text-sm text-gray-600 mb-5">
-              <span>
-                Showing {(page - 1) * 9 + 1} to{" "}
-                {Math.min(page * 9, destinations.length + (page - 1) * 9)} of{" "}
-                {totalData} Tours
-              </span>
-
-              <div className="join mt-4">
-                <button
-                  className="join-item btn btn-sm"
-                  onClick={() => setPage(page - 1)}
-                  disabled={page === 1}
-                >
-                  Previous
-                </button>
-
-                <button className="join-item btn btn-sm btn-disabled">
-                  {page} of {totalPages}
-                </button>
-
-                <button
-                  className="join-item btn btn-sm"
-                  onClick={() => setPage(page + 1)}
-                  disabled={page === totalPages}
-                >
-                  Next
-                </button>
+            {loading && (
+              <div className="flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
               </div>
-            </div>
+            )}
+
+            {!loading && destinations.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-gray-500 text-lg">No destinations found</p>
+              </div>
+            )}
+
+            {!loading && destinations.length > 0 && (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {destinations.map((dest) => (
+                    <DestCard tour={dest} key={dest._id} />
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-8 gap-4 text-sm text-gray-600 mb-5">
+                  <span>
+                    Showing {Math.min((page - 1) * 9 + 1, totalData)} to{" "}
+                    {Math.min(page * 9, totalData)} of {totalData} Tours
+                  </span>
+
+                  <div className="join">
+                    <button
+                      className="join-item btn btn-sm"
+                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      disabled={page === 1 || loading}
+                    >
+                      Previous
+                    </button>
+
+                    <button className="join-item btn btn-sm btn-disabled">
+                      {page} of {totalPages || 1}
+                    </button>
+
+                    <button
+                      className="join-item btn btn-sm"
+                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={page >= totalPages || loading}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </main>
         </div>
       </div>
