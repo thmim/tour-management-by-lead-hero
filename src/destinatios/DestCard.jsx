@@ -6,7 +6,7 @@ import { FaStar, FaClock, FaUsers, FaMapMarkerAlt, FaRegHeart } from "react-icon
 export default function DestCard({ tour }) {
   // console.log(tour);
   return (
-    <Link href={tour._id ? `/destinations-details/${tour._id}` : '#'}>
+    <Link href={tour._id ? `/destinations/${tour._id}` : '#'}>
     <div className=" rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition relative bg-neutral h-fit">
       {/* Image with hover zoom */}
       <div className="overflow-hidden">
