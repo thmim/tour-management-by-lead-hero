@@ -18,8 +18,8 @@ const Navbar = () => {
     { name: "Home", to: "/" },
     { name: "Destinations", to: "/all-destinations" },
     { name: "Create a Trip", to: "/create-trip" },
-    { name: "Add Destination", to: "/add-destination" },
-    { name: "About Us", to: "/about" },
+    // { name: "Add Destination", to: "/add-destination" },
+    { name: "Contact Us", to: "/contact-us" },
     { name: "Emergency", to: "/emergency" },
   ];
 
