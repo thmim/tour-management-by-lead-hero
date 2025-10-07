@@ -3,6 +3,8 @@ import CounterSection from "@/HomePageComponents/CounterSection";
 import DestinationCard from "@/HomePageComponents/DestinationCard";
 import FAQ from "@/HomePageComponents/Faq";
 import JoinUs from "@/HomePageComponents/JoinUs";
+import ReviewSection from "@/HomePageComponents/ReviewSection";
+import StepProcess from "@/HomePageComponents/Step";
 
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
         <DestinationCard />
         <CounterSection />
         <JoinUs />
+        <StepProcess/>
+        <ReviewSection/>
         <FAQ />
       </div>
     </div>

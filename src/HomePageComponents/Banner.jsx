@@ -32,7 +32,7 @@ const Banner = () => {
   }, [destinations.length]);
 
   return (
-    <div className="relative h-[30vh] md:h-[50vh] lg:h-[60vh] overflow-hidden">
+    <div className="relative h-[30vh] md:h-[70vh] lg:h-[80vh] overflow-hidden">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {destinations.map((dest, index) => (
