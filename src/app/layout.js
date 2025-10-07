@@ -1,9 +1,11 @@
+
 import { Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/Components/Navbar";
 import Footer from "@/Components/Footer";
-import ClientProvider from "@/Components/ClientProvider"; // new
+import AuthProvider from "@/context/AuthProvider";
 
-const geistSans = Raleway({
+const raleway = Raleway({
   variable: "--font-raleway",
   subsets: ["latin"],
 });
@@ -20,17 +22,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-theme="light">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-base-100`}
-      >
-        <ClientProvider>
+    <html lang="en">
+      <body className={`${raleway.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          <Navbar />
           {children}
-        </ClientProvider>
-        <Footer />
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
 }
-
-

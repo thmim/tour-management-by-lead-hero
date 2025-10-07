@@ -10,19 +10,17 @@ const Banner = () => {
     {
       name: "Cox's Bazar",
       subtitle: "EXPLORE THE LONGEST NATURAL SEA BEACH",
-      image:
-        "https://i.ibb.co.com/Wpx607W3/pexels-didarul-islam-2470780-4090625.jpg",
+      image: "https://i.ibb.co/Wpx607W3/pexels-didarul-islam-2470780-4090625.jpg",
     },
     {
       name: "Khagrachhari Hills",
       subtitle: "DISCOVER THE BEAUTY OF HILLS AND LAKES",
-      image: "https://i.ibb.co.com/HDQ5CQX2/pexels-nfzzz-10307912.jpg",
+      image: "https://i.ibb.co/HDQ5CQX2/pexels-nfzzz-10307912.jpg",
     },
     {
       name: "Kaptai Lake",
       subtitle: "ENJOY THE SERENITY OF THE LARGEST LAKE",
-      image:
-        "https://i.ibb.co.com/7NJ11d9L/rashed-kabir-v-Lmut-ili-Tg-unsplash.jpg",
+      image: "https://i.ibb.co/7NJ11d9L/rashed-kabir-v-Lmut-ili-Tg-unsplash.jpg",
     },
   ];
 
@@ -31,10 +29,10 @@ const Banner = () => {
       setCurrentSlide((prev) => (prev + 1) % destinations.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [destinations.length]);
 
   return (
-    <div className="relative h-[40vh] md:h-[50vh] lg:h-[75vh] overflow-hidden max-w-7xl mx-auto rounded-2xl">
+    <div className="relative h-[30vh] md:h-[50vh] lg:h-[60vh] overflow-hidden">
       {/* Background Slider */}
       <div className="absolute inset-0">
         {destinations.map((dest, index) => (
@@ -52,8 +50,7 @@ const Banner = () => {
             transition={{ duration: 1.5, ease: "easeInOut" }}
           />
         ))}
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Hero Content */}
@@ -65,10 +62,10 @@ const Banner = () => {
           transition={{ duration: 1, delay: 0.3 }}
           className="max-w-3xl"
         >
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white mb-4 leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-4 leading-tight">
             {destinations[currentSlide].name}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 sm:mb-8">
+          <p className="text-base md:text-xl text-gray-200 mb-6 sm:mb-8">
             {destinations[currentSlide].subtitle}
           </p>
 
