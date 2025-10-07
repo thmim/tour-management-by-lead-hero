@@ -68,7 +68,7 @@ export default function ReviewSection() {
         <p className="text-gray-400 max-w-2xl mx-auto">
           See why explorers around the world trust TourEase to plan their dream journeys.
         </p>
-
+{/* comment */}
         {/* Swiper Carousel */}
         <Swiper
           modules={[Autoplay]}
