@@ -53,7 +53,7 @@ export default function JoinUs() {
   return (
     <section
       id="joinus"
-      className="relative max-w-7xl mx-auto my-10 md:my-20 bg-cover bg-center bg-no-repeat rounded-xl overflow-hidden"
+      className="relative  my-10 md:my-20 bg-cover bg-center bg-no-repeat rounded-xl overflow-hidden"
       style={{
         backgroundImage:
           "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80')",
@@ -122,8 +122,7 @@ export default function JoinUs() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="grid gap-6"
         >
-          <h3 className="text-xl font-semibold text-white">Why Join Us?</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+          <div className="space-y-2">
             {reasons.map((item, idx) => (
               <motion.div
                 key={idx}

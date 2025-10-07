@@ -101,7 +101,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="py-10 md:py-20 relative overflow-hidden">
+    <section className="py-10 mb-10 relative overflow-hidden">
       <div className="relative z-10">
         {/* Header */}
         <div className="text-center lg:mb-16 mb-8">

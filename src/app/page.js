@@ -7,12 +7,14 @@ import JoinUs from "@/HomePageComponents/JoinUs";
 export default function Home() {
   return (
     <div>
-    <Banner></Banner>
-    <DestinationCard></DestinationCard>
-    <CounterSection></CounterSection>
-    <JoinUs></JoinUs>
-    <FAQ></FAQ>
+      <Banner />
+      <div className="max-w-11/12 mx-auto">
+        <DestinationCard />
+        <CounterSection />
+        <JoinUs />
+        <FAQ />
+      </div>
     </div>
-    
   );
 }
+ 
