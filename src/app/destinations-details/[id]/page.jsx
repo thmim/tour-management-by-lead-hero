@@ -28,80 +28,115 @@ export default async function DestinationDetailsPage({ params }) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
 
-  const destination = await getDestination(id);
+  const destinationInfo = await getDestination(id);
 
-  if (!destination) {
+  if (!destinationInfo) {
     notFound();
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          <div className="relative h-96 md:h-[500px]">
-            <img
-              src={destination.image_url || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800"}
-              alt={destination.tour_name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute bottom-8 left-8 text-white">
-              <h1 className="text-4xl md:text-5xl font-bold mb-2">
-                {destination.tour_name}
-              </h1>
-              <p className="text-lg opacity-90">📍 {destination.location}</p>
-            </div>
-          </div>
-
-          <div className="p-6 md:p-8">
-            <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-8 pb-6 border-b">
-              <span className="flex items-center gap-2">
-                <span className="font-semibold">Duration:</span>
-                ⏱️ {destination.duration}
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="font-semibold">Max Guests:</span>
-                👥 {destination.maxGuests || 15}
-              </span>
-            </div>
-
-            <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl">
-              <span className="text-4xl font-bold text-orange-500">
-                ${destination.price}
-              </span>
-              <span className="text-gray-600"> /person</span>
-            </div>
-
-            {destination.description && (
-              <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">About This Tour</h2>
-                <p className="text-gray-600 leading-relaxed text-lg">{destination.description}</p>
-              </div>
-            )}
-
-            {destination.itinerary && destination.itinerary.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Tour Itinerary</h2>
-                <div className="space-y-4">
-                  {destination.itinerary.map((stop, index) => (
-                    <div key={index} className="border-l-4 border-orange-500 pl-6 py-3 hover:bg-orange-50 transition rounded-r-lg">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg">{stop.stop_name}</h3>
-                          {stop.description && <p className="text-gray-600 mt-1">{stop.description}</p>}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+      <div className="max-w-6xl mx-auto p-4 lg:p-8  mt-12">
+      {/* Image Section */}
+      <div className="relative w-full h-72 md:h-[420px] rounded-2xl overflow-hidden shadow-xl border">
+        <img
+          src={destinationInfo.image_url}
+          alt={destinationInfo.tour_name}
+          className="object-cover w-full h-full"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-white">{destinationInfo.tour_name}</h1>
+          <p className="text-white/80 text-sm mt-1">
+            {destinationInfo.tour_type} - {destinationInfo.category}
+          </p>
         </div>
       </div>
+
+      {/* Content Grid */}
+      <div className="mt-8 grid md:grid-cols-3 gap-6">
+        {/* Left side content */}
+        <div className="md:col-span-2 space-y-6">
+          {/* Quick Info */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="p-4 bg-base-100 rounded-xl shadow-sm border">
+              <p className="text-xs text-gray-500">Location</p>
+              <p className="font-medium">{destinationInfo.location}</p>
+            </div>
+            <div className="p-4 bg-base-100 rounded-xl shadow-sm border">
+              <p className="text-xs text-gray-500">Duration</p>
+              <p className="font-medium">{destinationInfo.duration}</p>
+            </div>
+            <div className="p-4 bg-base-100 rounded-xl shadow-sm border">
+              <p className="text-xs text-gray-500">Category</p>
+              <p className="font-medium">{destinationInfo.category}</p>
+            </div>
+          </div>
+
+          {/* Safety Info */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Safety & Advisory</h2>
+            <div className="bg-base-100 rounded-xl shadow-sm border p-4">
+              <p className="text-sm">{destinationInfo.safety_info.local_advisory}</p>
+              <p className="text-xs mt-2 text-gray-500">
+                Emergency Contact: <span className="font-medium">{destinationInfo.safety_info.emergency_contact}</span>
+              </p>
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Location Map</h2>
+            <div className="bg-base-100 rounded-xl shadow-sm border p-4">
+              {/* Map component */}
+              <Map mapInfo={destinationInfo.itinerary}></Map>
+              
+            </div>
+          </div>
+        </div>
+
+        {/* Right: Booking Card */}
+        <aside className="space-y-6">
+          <div className="sticky top-20 p-6 bg-base-100 rounded-xl shadow-lg border">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-500 text-sm">Price per person</p>
+              <p className="text-2xl font-bold">${destinationInfo.price}</p>
+            </div>
+
+            {/* Availability */}
+            <div className="mt-4">
+              <p className="font-medium mb-2">Select Date</p>
+              <div className="flex flex-wrap gap-2">
+                {destinationInfo.availability.length === 0 && (
+                  <span className="text-gray-500 text-sm">No dates available</span>
+                )}
+                {destinationInfo.availability.map((date) => (
+                  <button
+                    key={date}
+                    onClick={() => setSelectedDate(date)}
+                    className={`px-3 py-1 rounded-full text-sm border transition ${selectedDate === date
+                      ? "bg-primary text-white border-primary"
+                      : "bg-white text-gray-700 border-gray-300 hover:border-primary"
+                      }`}
+                  >
+                    {new Date(date).toLocaleDateString()}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Booking Call to action */}
+            <Link to="/booking">
+            <button className="btn bg-gradient-to-r from-orange-400 to-red-400 w-full mt-6 text-white">Proceed to Checkout</button>
+            </Link>
+
+            {/* Transport Info */}
+            <div className="mt-6 border-t pt-4 text-sm space-y-1">
+              <p><span className="font-medium">Airport:</span> {destinationInfo.nearest_transport.airport}</p>
+              <p><span className="font-medium">Train:</span> {destinationInfo.nearest_transport.train_station}</p>
+              <p><span className="font-medium">Bus:</span> {destinationInfo.nearest_transport.bus_stop}</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+
     </div>
+
   );
 }
