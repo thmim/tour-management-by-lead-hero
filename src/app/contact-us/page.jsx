@@ -15,7 +15,7 @@ export default function ContactPage() {
             Our friendly Tourease team is always here to make your travel experience 
             smooth, safe, and unforgettable.
           </p>
-
+{/* commit */}
           <div className="text-gray-700 text-lg space-y-3">
             <p>
               <span className="font-semibold">📧 Email:</span> support@tourease.com
