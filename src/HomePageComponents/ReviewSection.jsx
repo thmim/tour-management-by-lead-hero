@@ -72,11 +72,12 @@ export default function ReviewSection() {
           autoplay={{ delay: 3500, disableOnInteraction: false }}
           loop={true}
           centeredSlides={true}
-          slidesPerView={1.2}
-          spaceBetween={40}
+          slidesPerView={1} // mobile: 1 fully centered
+          spaceBetween={20}
           breakpoints={{
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
+            640: { slidesPerView: 1.2, spaceBetween: 20 },
+            768: { slidesPerView: 2, spaceBetween: 30 },
+            1024: { slidesPerView: 3, spaceBetween: 40 },
           }}
           onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
           className="mt-14"
@@ -91,7 +92,7 @@ export default function ReviewSection() {
                     opacity: isActive ? 1 : 0.8,
                   }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className={`h-[300px] w-[300px] md:w-[320px] flex flex-col justify-between rounded-2xl p-6 text-left border shadow-md transition-all duration-500
+                  className={`h-[300px] w-full max-w-[320px] md:max-w-[340px] flex flex-col justify-between rounded-2xl p-6 text-left border shadow-md transition-all duration-500
                     ${
                       isActive
                         ? "bg-white/10 border-orange-400/80 shadow-orange-200/50 backdrop-blur-md"
