@@ -5,7 +5,7 @@ import { FaSmile, FaMapMarkerAlt, FaStar, FaPlane } from "react-icons/fa";
 
 export default function CounterSection() {
   return (
-    <section className="my-10 md:my-20  text-center relative overflow-hidden">
+    <section className="my-10 md:mb-40  text-center relative overflow-hidden">
       <h3 className="text-sm md:text-lg text-accent tracking-widest font-medium uppercase">
         Our Achievements
       </h3>

@@ -26,15 +26,16 @@ const MapComponent = ({ mapInfo }) => {
 
   return (
     <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-xl">
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={12}
-        options={{
-          mapTypeId: "satellite", 
-          disableDefaultUI: false,
-        }}
-      >
+      <MapContainer 
+      center={center} 
+      zoom={12}
+      className="z-0"
+       style={{ width: "100%", height: "100%" }}>
+        <TileLayer
+          url={DARK_TILE_LAYER}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
+        />
+
         {mapInfo.map((stop, index) => (
           <Marker
             key={index}
@@ -51,7 +52,7 @@ const MapComponent = ({ mapInfo }) => {
             )}
           </Marker>
         ))}
-      </GoogleMap>
+      </MapContainer>
     </div>
   );
 };
