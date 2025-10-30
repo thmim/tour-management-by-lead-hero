@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, User, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
@@ -31,24 +31,25 @@ const Navbar = () => {
     }
   };
 
+  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 30);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // ✅ Only Home & Destination page transparent when scrollY = 0
+  const isTransparent =
+    (pathname === "/" || pathname === "/all-destinations") && !isScrolled;
+
   return (
     <div
       className={`fixed top-0 left-0 w-full z-[200] transition-all duration-500 ${
-        isScrolled
-          ? "backdrop-blur-md bg-white/80 shadow-sm"
-          : "bg-transparent"
+        isTransparent
+          ? "bg-transparent"
+          : "backdrop-blur-md bg-white/80 shadow-sm"
       }`}
     >
       <div className="max-w-[91.67%] mx-auto">
@@ -64,7 +65,7 @@ const Navbar = () => {
               <img src="/logo.png" alt="logo" className="w-8 sm:w-10" />
               <span
                 className={`text-xl sm:text-2xl font-bold transition-colors ${
-                  isScrolled ? "text-gray-900" : "text-white drop-shadow-md"
+                  isTransparent ? "text-white drop-shadow-md" : "text-gray-900"
                 }`}
               >
                 TourEase
@@ -81,13 +82,13 @@ const Navbar = () => {
                   key={item.name}
                   href={item.to}
                   className={`relative px-3 py-2 font-medium transition-all duration-300 ${
-                    isScrolled
+                    isTransparent
                       ? isActive
-                        ? "text-orange-500"
-                        : "text-gray-800 hover:text-orange-500"
+                        ? "text-orange-400"
+                        : "text-white hover:text-orange-400"
                       : isActive
-                      ? "text-orange-400"
-                      : "text-white hover:text-orange-400"
+                      ? "text-orange-500"
+                      : "text-gray-800 hover:text-orange-500"
                   }`}
                 >
                   {item.name}
@@ -96,54 +97,69 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          {/* Right Side */}
+          <div className="flex items-center gap-2 sm:gap-4 relative">
             {status === "loading" ? (
               <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
             ) : user ? (
-              <div className="flex items-center gap-3 relative">
-                <div
-                  className="relative"
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  <Link href="/profile">
+              <>
+                {/* ✅ Avatar for mobile also visible */}
+                <div className="relative">
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="focus:outline-none"
+                  >
                     <img
                       src={
                         user?.image ||
                         "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
                       }
                       alt="Profile"
-                      className="w-8 h-8 lg:w-10 lg:h-10 rounded-full border border-gray-200 cursor-pointer"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 cursor-pointer"
                       referrerPolicy="no-referrer"
                     />
-                  </Link>
+                  </button>
 
+                  {/* Desktop Dropdown */}
                   <AnimatePresence>
-                    {isHovered && (
+                    {isDropdownOpen && (
                       <motion.div
-                        initial={{ opacity: 0, y: -2 }}
-                        animate={{ opacity: 1, y: 4 }}
-                        exit={{ opacity: 0, y: -2 }}
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute top-full left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-medium px-3 py-1 rounded-lg shadow-lg pointer-events-none max-w-[150px] truncate text-center"
+                        className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 hidden lg:block"
                       >
-                        {user?.name || "User"}
+                        <Link
+                          href="/dashboard"
+                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <LayoutDashboard className="w-4 h-4" />
+                          Dashboard
+                        </Link>
+                        <Link
+                          href="/profile"
+                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          <User className="w-4 h-4" />
+                          Profile
+                        </Link>
+                        <button
+                          onClick={() => {
+                            handleLogout();
+                            setIsDropdownOpen(false);
+                          }}
+                          className="w-full flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 transition-all"
+                        >
+                          <LogOut className="w-4 h-4" /> Logout
+                        </button>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
-
-                <motion.button
-                  onClick={handleLogout}
-                  className="hidden lg:block lg:inline-flex items-center gap-1 bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 sm:px-6 rounded-full font-semibold hover:shadow-lg transition-all text-sm sm:text-base"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </motion.button>
-              </div>
+              </>
             ) : (
               <Link href="/auth/login">
                 <motion.button
@@ -160,7 +176,7 @@ const Navbar = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`lg:hidden p-2 transition-colors ${
-                isScrolled ? "text-gray-800" : "text-white"
+                isTransparent ? "text-white" : "text-gray-800"
               } hover:text-orange-400`}
               aria-label="Toggle menu"
             >
@@ -199,15 +215,31 @@ const Navbar = () => {
                     );
                   })}
                   {user ? (
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setIsMenuOpen(false);
-                      }}
-                      className="text-left px-4 py-3 rounded-lg font-medium text-red-500 hover:bg-red-50 flex items-center gap-2"
-                    >
-                      <LogOut className="w-4 h-4" /> Logout
-                    </button>
+                    <>
+                      <Link
+                        href="/dashboard"
+                        className="text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/profile"
+                        className="text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsMenuOpen(false);
+                        }}
+                        className="text-left px-4 py-3 rounded-lg font-medium text-red-500 hover:bg-red-50 flex items-center gap-2"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </button>
+                    </>
                   ) : (
                     <Link
                       href="/auth/login"
