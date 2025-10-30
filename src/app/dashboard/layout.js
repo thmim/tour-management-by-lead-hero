@@ -4,6 +4,7 @@ import { getUserRole } from "@/lib/getUserRole";
 
 export default async function DashboardLayout({ children }) {
   const role = await getUserRole();
+  // const role="admin"
 
   if (!role) {
     return (

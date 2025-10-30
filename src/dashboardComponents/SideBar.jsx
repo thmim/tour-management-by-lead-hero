@@ -59,7 +59,9 @@ export default function Sidebar({ role, collapsed, setCollapsed, isMobile }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 ">
           {!collapsed && (
-            <h1 className="text-2xl font-bold text-orange-500 tracking-wide">TourHub</h1>
+           
+             <h1 className="text-2xl font-bold text-orange-500 tracking-wide">TourEase</h1>
+             
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}
