@@ -17,6 +17,7 @@ import {
   FileBarChart,
   Heart,
 } from "lucide-react";
+import { signOut } from "next-auth/react";
 
 export default function Sidebar({ role, collapsed, setCollapsed, isMobile }) {
   const links = {
@@ -39,6 +40,14 @@ export default function Sidebar({ role, collapsed, setCollapsed, isMobile }) {
     ],
   }[role] || [];
 
+   const handleLogout = async () => {
+      try {
+        await signOut({ callbackUrl: "/" });
+      } catch (err) {
+        console.error("Logout failed:", err);
+      }
+    };
+
   return (
     <>
       {isMobile && !collapsed && (
@@ -60,7 +69,7 @@ export default function Sidebar({ role, collapsed, setCollapsed, isMobile }) {
         <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200 ">
           {!collapsed && (
            
-             <h1 className="text-2xl font-bold text-orange-500 tracking-wide">TourEase</h1>
+              <Link href="/"> <h1 className="text-2xl font-bold text-orange-500 tracking-wide">TourEase</h1></Link>
              
           )}
           <button
@@ -91,7 +100,7 @@ export default function Sidebar({ role, collapsed, setCollapsed, isMobile }) {
         </ul>
 
         {/* Logout */}
-        <div className="p-4 border-t border-gray-200 ">
+        <div onClick={()=>signOut()}  className="p-4 cursor-pointer border-t border-gray-200 ">
           <button className="flex items-center gap-2 w-full justify-center py-2 rounded-xl text-gray-700 hover:text-white hover:bg-orange-500 transition-all shadow-sm">
             <LogOut size={18} />
             {!collapsed && <span className="font-medium">Logout</span>}

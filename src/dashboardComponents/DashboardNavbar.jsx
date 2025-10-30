@@ -2,8 +2,13 @@
 import { Bell, AlignJustify, Search, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function DashboardNavbar({ onToggle, collapsed, isMobile }) {
+    const {data:session}=useSession();
+    const user=session?.user;
+    console.log(user)
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
@@ -14,7 +19,8 @@ export default function DashboardNavbar({ onToggle, collapsed, isMobile }) {
       {/* Left: Sidebar Toggle (only mobile) + Title */}
       <div className="flex items-center gap-3">
         {isMobile && (
-          <button
+          <div className="flex items-center gap-2">
+            <button
             onClick={onToggle}
             className="p-2 rounded-full hover:bg-orange-100  transition"
           >
@@ -23,6 +29,8 @@ export default function DashboardNavbar({ onToggle, collapsed, isMobile }) {
               className="text-gray-700 "
             />
           </button>
+          <Link href="/"> <h1 className="text-2xl font-bold text-orange-500 tracking-wide">TourEase</h1></Link>
+          </div>
         )}
         
       </div>
@@ -47,7 +55,14 @@ export default function DashboardNavbar({ onToggle, collapsed, isMobile }) {
         <div className="flex items-center gap-2 cursor-pointer group relative">
           <div className="w-9 h-9 rounded-full ring-2 ring-orange-500/30 overflow-hidden">
             <Image
-              src="https://i.pravatar.cc/150?img=32"
+              src={
+                        user?.image ||
+                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                      }
+                     
+                      
+                      referrerPolicy="no-referrer"
+                 
               width={36}
               height={36}
               alt="Profile"
@@ -55,9 +70,9 @@ export default function DashboardNavbar({ onToggle, collapsed, isMobile }) {
           </div>
           <div className="hidden sm:flex flex-col leading-tight">
             <span className="text-sm font-medium text-gray-800 ">
-              Rafi Ahmed
+             {user?.name}
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">Admin</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">{user?.role}</span>
           </div>
           <ChevronDown
             size={18}

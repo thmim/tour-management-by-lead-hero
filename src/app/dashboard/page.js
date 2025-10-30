@@ -5,7 +5,7 @@ export default async function DashboardPage() {
   const role = await getUserRole();
 //  const role="admin"
 
-  // যদি user না থাকে → login page
+  
   if (!role) {
     redirect("/auth/login");
   }
