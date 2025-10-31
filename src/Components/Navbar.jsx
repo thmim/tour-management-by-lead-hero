@@ -10,7 +10,10 @@ import { useSession, signOut } from "next-auth/react";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDestinationsOpen, setIsDestinationsOpen] = useState(false);
+  const [hoveredCountry, setHoveredCountry] = useState("France");
   const [isScrolled, setIsScrolled] = useState(false);
+
   const pathname = usePathname();
   const { data: session, status } = useSession();
   const user = session?.user;
@@ -23,6 +26,55 @@ const Navbar = () => {
     { name: "Emergency", to: "/emergency" },
   ];
 
+  const destinations = [
+  {
+    name: "Chattogram Division",
+    image: "/images/chattogram.jpg",
+    tours: [
+      { location: "Bandarban", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
+      { location: "Rangamati", image: "https://i.ibb.co/Vq5KYDk/rangamati.jpg" },
+      { location: "Cox’s Bazar", image: "https://i.ibb.co/nRHvw9m/coxs1.jpg" },
+      { location: "Teknaf", image: "https://i.ibb.co/0sXLh6D/saint1.jpg" }
+    ]
+  },
+  {
+    name: "Sylhet Division",
+    image: "/images/sylhet.jpg",
+    tours: [
+      { location: "Gowainghat", image: "https://i.ibb.co/nBTRFfB/bichanakandi.jpg" },
+      { location: "Srimangal", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" }
+    ]
+  },
+  {
+    name: "Dhaka Division",
+    image: "/images/dhaka.jpg",
+    tours: [
+      { location: "Sonargaon", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" }
+    ]
+  },
+  {
+    name: "Barisal Division",
+    image: "/images/barisal.jpg",
+    tours: [
+      { location: "Kuakata", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" }
+    ]
+  },
+  {
+    name: "Khulna Division",
+    image: "/images/khulna.jpg",
+    tours: [
+      { location: "Mongla", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" }
+    ]
+  },
+  {
+    name: "Rajshahi Division",
+    image: "/images/rajshahi.jpg",
+    tours: [
+      { location: "Naogaon", image: "https://i.ibb.co/7bQJxkQ/paharpur.jpg" }
+    ]
+  }
+];
+
   const handleLogout = async () => {
     try {
       await signOut({ callbackUrl: "/" });
@@ -31,7 +83,6 @@ const Navbar = () => {
     }
   };
 
-  // Scroll detection
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
@@ -40,9 +91,11 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Only Home & Destination page transparent when scrollY = 0
   const isTransparent =
     (pathname === "/" || pathname === "/all-destinations") && !isScrolled;
+
+  const activeCountry =
+    destinations.find((d) => d.name === hoveredCountry) || destinations[0];
 
   return (
     <div
@@ -74,9 +127,137 @@ const Navbar = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 relative">
             {navItems.map((item) => {
               const isActive = pathname === item.to;
+
+              // Destinations Dropdown
+              if (item.name === "Destinations") {
+                return (
+                  <div 
+                    key={item.name}
+                    className="relative group"
+                    onMouseEnter={() => setIsDestinationsOpen(true)}
+                    onMouseLeave={() => setIsDestinationsOpen(false)}
+                  >
+                    <button
+                      className={`relative px-3 py-2 font-medium transition-all duration-300 ${
+                        isTransparent
+                          ? isActive
+                            ? "text-orange-400"
+                            : "text-white hover:text-orange-400"
+                          : isActive
+                          ? "text-orange-500"
+                          : "text-gray-800 hover:text-orange-500"
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+
+                    {/* Mega Dropdown */}
+                    <AnimatePresence>
+                      {isDestinationsOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[1000px] bg-white rounded-2xl shadow-xl p-6 grid grid-cols-[1.1fr_1.3fr_1.2fr] gap-6 z-50"
+                        >
+                          {/* Left Column */}
+                          <div className="border-r border-gray-200 pr-6">
+                            <h4 className="text-orange-500 font-semibold mb-3">
+                              Top destinations
+                            </h4>
+                            <ul className="space-y-2">
+                              {destinations.map((d) => (
+                                <li
+                                  key={d.name}
+                                  onMouseEnter={() => setHoveredCountry(d.name)}
+                                >
+                                  <Link
+                                    href={`/destinations/${d.name.toLowerCase()
+                                    .replace(/\s+/g, "-")}`}
+                                    className={`block text-gray-700 hover:text-orange-500 transition-colors ${
+                                      hoveredCountry === d.name
+                                        ? "font-semibold text-orange-600"
+                                        : ""
+                                    }`}
+                                  >
+                                    {d.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                            <Link
+                              href="/all-destinations"
+                              className="block mt-4 text-orange-500 hover:underline font-medium"
+                            >
+                              View All
+                            </Link>
+                          </div>
+
+                          {/* Middle Column */}
+                          <div className="flex flex-col justify-between">
+                            <h4 className="text-gray-800 font-semibold mb-4">
+                              {hoveredCountry} Highlights
+                            </h4>
+                            <div className="flex flex-wrap gap-4">
+                              {activeCountry.tours.map((tour) => (
+                                <Link
+                                  key={tour.name}
+                                  href={`/tours/${tour.location
+                                    .toLowerCase()
+                                    .replace(/\s+/g, "-")}`}
+                                  className="flex flex-col items-center gap-2 group w-[90px]"
+                                >
+                                  <img
+                                    src={tour.image}
+                                    alt={tour.location}
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-gray-200 group-hover:border-orange-400 transition-all"
+                                  />
+                                  <span className="text-xs text-gray-700 group-hover:text-orange-500 text-center leading-tight">
+                                    {tour.location}
+                                  </span>
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Right Column */}
+                          <motion.div
+                            key={activeCountry.name}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="relative rounded-xl overflow-hidden group max-h-[220px]"
+                          >
+                            <img
+                              src={activeCountry.image}
+                              alt={activeCountry.name}
+                              className="w-full h-full object-cover rounded-xl"
+                            />
+                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-all rounded-xl flex flex-col justify-center items-center text-white p-4">
+                              <h4 className="text-lg font-semibold mb-2 text-center">
+                                Explore {activeCountry.name}
+                              </h4>
+                              <Link
+                                href={`/destinations/${activeCountry.name.toLowerCase()}`}
+                                className="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-full text-sm font-semibold transition-all"
+                              >
+                                View Details
+                              </Link>
+                            </div>
+                          </motion.div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
+              // Normal nav links
               return (
                 <Link
                   key={item.name}
@@ -97,69 +278,65 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* Right Side */}
+          {/* Right Side (User / Login) */}
           <div className="flex items-center gap-2 sm:gap-4 relative">
             {status === "loading" ? (
               <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
             ) : user ? (
-              <>
-                {/* ✅ Avatar for mobile also visible */}
-                <div className="relative">
-                  <button
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="focus:outline-none"
-                  >
-                    <img
-                      src={
-                        user?.image ||
-                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-                      }
-                      alt="Profile"
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 cursor-pointer"
-                      referrerPolicy="no-referrer"
-                    />
-                  </button>
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="focus:outline-none"
+                >
+                  <img
+                    src={
+                      user?.image ||
+                      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+                    }
+                    alt="Profile"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200 cursor-pointer"
+                    referrerPolicy="no-referrer"
+                  />
+                </button>
 
-                  {/* Desktop Dropdown */}
-                  <AnimatePresence>
-                    {isDropdownOpen && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50 hidden lg:block"
+                <AnimatePresence>
+                  {isDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50"
+                    >
+                      <Link
+                        href="/dashboard"
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+                        onClick={() => setIsDropdownOpen(false)}
                       >
-                        <Link
-                          href="/dashboard"
-                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          <LayoutDashboard className="w-4 h-4" />
-                          Dashboard
-                        </Link>
-                        <Link
-                          href="/profile"
-                          className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
-                          onClick={() => setIsDropdownOpen(false)}
-                        >
-                          <User className="w-4 h-4" />
-                          Profile
-                        </Link>
-                        <button
-                          onClick={() => {
-                            handleLogout();
-                            setIsDropdownOpen(false);
-                          }}
-                          className="w-full flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 transition-all"
-                        >
-                          <LogOut className="w-4 h-4" /> Logout
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </>
+                        <LayoutDashboard className="w-4 h-4" />
+                        Dashboard
+                      </Link>
+                      <Link
+                        href="/profile"
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition-all"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <User className="w-4 h-4" />
+                        Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50 transition-all"
+                      >
+                        <LogOut className="w-4 h-4" /> Logout
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             ) : (
               <Link href="/auth/login">
                 <motion.button
@@ -184,76 +361,6 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden overflow-hidden backdrop-blur-lg bg-white/70 shadow-lg rounded-b-2xl"
-            >
-              <div className="pt-4 border-t border-gray-200 mt-4">
-                <nav className="flex flex-col gap-2">
-                  {navItems.map((item) => {
-                    const isActive = pathname === item.to;
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.to}
-                        className={`text-left px-4 py-3 rounded-lg font-medium transition-all duration-300 ${
-                          isActive
-                            ? "bg-orange-100 text-orange-600 border-l-4 border-orange-500"
-                            : "text-gray-800 hover:bg-orange-50 hover:text-orange-500"
-                        }`}
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                  {user ? (
-                    <>
-                      <Link
-                        href="/dashboard"
-                        className="text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Dashboard
-                      </Link>
-                      <Link
-                        href="/profile"
-                        className="text-left px-4 py-3 rounded-lg font-medium text-gray-700 hover:bg-orange-50 hover:text-orange-600"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        Profile
-                      </Link>
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsMenuOpen(false);
-                        }}
-                        className="text-left px-4 py-3 rounded-lg font-medium text-red-500 hover:bg-red-50 flex items-center gap-2"
-                      >
-                        <LogOut className="w-4 h-4" /> Logout
-                      </button>
-                    </>
-                  ) : (
-                    <Link
-                      href="/auth/login"
-                      className="text-left px-4 py-3 rounded-lg font-medium text-orange-600 hover:bg-orange-50"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Log In
-                    </Link>
-                  )}
-                </nav>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );
