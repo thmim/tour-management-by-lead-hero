@@ -26,54 +26,83 @@ const Navbar = () => {
     { name: "Emergency", to: "/emergency" },
   ];
 
-  const destinations = [
-    {
-      name: "Chattogram Division",
-      image: "/images/chattogram.jpg",
-      tours: [
-        { location: "Bandarban", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
-        { location: "Rangamati", image: "https://i.ibb.co/Vq5KYDk/rangamati.jpg" },
-        { location: "Cox’s Bazar", image: "https://i.ibb.co/nRHvw9m/coxs1.jpg" },
-        { location: "Teknaf", image: "https://i.ibb.co/0sXLh6D/saint1.jpg" },
-      ],
-    },
-    {
-      name: "Sylhet Division",
-      image: "/images/sylhet.jpg",
-      tours: [
-        { location: "Gowainghat", image: "https://i.ibb.co/nBTRFfB/bichanakandi.jpg" },
-        { location: "Srimangal", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" },
-      ],
-    },
-    {
-      name: "Dhaka Division",
-      image: "/images/dhaka.jpg",
-      tours: [
-        { location: "Sonargaon", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" },
-      ],
-    },
-    {
-      name: "Barisal Division",
-      image: "/images/barisal.jpg",
-      tours: [
-        { location: "Kuakata", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" },
-      ],
-    },
-    {
-      name: "Khulna Division",
-      image: "/images/khulna.jpg",
-      tours: [
-        { location: "Mongla", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" },
-      ],
-    },
-    {
-      name: "Rajshahi Division",
-      image: "/images/rajshahi.jpg",
-      tours: [
-        { location: "Naogaon", image: "https://i.ibb.co/7bQJxkQ/paharpur.jpg" },
-      ],
-    },
-  ];
+const destinations = [
+  {
+    name: "Chattogram Division",
+    image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg",
+    tours: [
+      { location: "Cox’s Bazar", image: "https://i.ibb.co/nRHvw9m/coxs1.jpg" },
+      { location: "Bandarban", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
+      { location: "Rangamati", image: "https://i.ibb.co/Vq5KYDk/rangamati.jpg" },
+      { location: "Saint Martin’s Island", image: "https://i.ibb.co/0sXLh6D/saint1.jpg" },
+    ],
+  },
+  {
+    name: "Dhaka Division",
+    image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg",
+    tours: [
+      { location: "Sonargaon", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" },
+      { location: "Panam City", image: "https://i.ibb.co/6g8RbzC/panam-city.jpg" },
+      { location: "Lalbagh Fort", image: "https://i.ibb.co/FzBzFpC/lalbagh.jpg" },
+    ],
+  },
+  {
+    name: "Sylhet Division",
+    image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg",
+    tours: [
+      { location: "Jaflong", image: "https://i.ibb.co/fX7sVHZ/jaflong.jpg" },
+      { location: "Ratargul Swamp Forest", image: "https://i.ibb.co/V9c7gdD/ratargul.jpg" },
+      { location: "Bichanakandi", image: "https://i.ibb.co/nBTRFfB/bichanakandi.jpg" },
+      { location: "Srimangal", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" },
+    ],
+  },
+  {
+    name: "Khulna Division",
+    image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg",
+    tours: [
+      { location: "Sundarbans", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" },
+      { location: "Mongla Port", image: "https://i.ibb.co/5YDYvKn/mongla.jpg" },
+      { location: "Shat Gambuj Mosque", image: "https://i.ibb.co/mRBYLCW/shatgambuj.jpg" },
+    ],
+  },
+  {
+    name: "Barisal Division",
+    image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg",
+    tours: [
+      { location: "Kuakata Sea Beach", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" },
+      { location: "Durga Sagar", image: "https://i.ibb.co/TBrMbrH/durga-sagar.jpg" },
+      { location: "Floating Guava Market", image: "https://i.ibb.co/3MkGZKp/guava-market.jpg" },
+    ],
+  },
+  {
+    name: "Rajshahi Division",
+    image: "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzYkwVMQEEUccGfnkqnly8weIu9nqAbK2vo-FLYzT36km7wQMKvy7pWVR0CkgEPAo3GeIFdoQrHPhlxlqpvDrx4ENCHFuU-qFSBlm-oh7CLc7jEWEOo5YS40UQuO9EPguGnoBcjitPexF6a=w540-h312-n-k-no",
+    tours: [
+      { location: "Paharpur (Somapura Mahavihara)", image: "https://i.ibb.co.com/Xkt2hV0Q/1200px-22.jpg" },
+      { location: "Bagha Mosque", image: "https://i.ibb.co.com/C3R5cqv3/944bdaf93f02094ef46659d67c3c36fc.jpg" },
+      { location: "pakshi hardinge bridge", image: "https://i.ibb.co.com/V07MPF4t/images.jpg" },
+    ],
+  },
+  {
+    name: "Rangpur Division",
+    image: "https://i.ibb.co/LNBrTnt/tajhat-palace.jpg",
+    tours: [
+      { location: "Tajhat Palace", image: "https://i.ibb.co/LNBrTnt/tajhat-palace.jpg" },
+      { location: "Kantajew Temple", image: "https://i.ibb.co/hKNx7y1/kantajew.jpg" },
+      { location: "Vinno Jagat", image: "https://i.ibb.co/f1KcvRB/vinnojagat.jpg" },
+    ],
+  },
+  {
+    name: "Mymensingh Division",
+    image: "https://i.ibb.co/xCjkr3F/mymensingh-town-hall.jpg",
+    tours: [
+      { location: "Shoshi Lodge", image: "https://i.ibb.co/sHG17tN/shoshi-lodge.jpg" },
+      { location: "Zainul Abedin Museum", image: "https://i.ibb.co/RbgJpGn/zainul.jpg" },
+      { location: "Garo Hills", image: "https://i.ibb.co/w4fVCV2/garo-hills.jpg" },
+    ],
+  },
+];
+
 
   const handleLogout = async () => {
     try {
