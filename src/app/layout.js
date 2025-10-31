@@ -1,9 +1,7 @@
-
 import { Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/Components/Navbar";
-import Footer from "@/Components/Footer";
 import AuthProvider from "@/context/AuthProvider";
+
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -21,13 +19,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en" data-theme="light">
       <body className={`${raleway.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
-          <Navbar />
+                  
           {children}
-          <Footer />
+       
         </AuthProvider>
       </body>
     </html>
