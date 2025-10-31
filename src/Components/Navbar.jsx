@@ -27,53 +27,53 @@ const Navbar = () => {
   ];
 
   const destinations = [
-  {
-    name: "Chattogram Division",
-    image: "/images/chattogram.jpg",
-    tours: [
-      { location: "Bandarban", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
-      { location: "Rangamati", image: "https://i.ibb.co/Vq5KYDk/rangamati.jpg" },
-      { location: "Cox’s Bazar", image: "https://i.ibb.co/nRHvw9m/coxs1.jpg" },
-      { location: "Teknaf", image: "https://i.ibb.co/0sXLh6D/saint1.jpg" }
-    ]
-  },
-  {
-    name: "Sylhet Division",
-    image: "/images/sylhet.jpg",
-    tours: [
-      { location: "Gowainghat", image: "https://i.ibb.co/nBTRFfB/bichanakandi.jpg" },
-      { location: "Srimangal", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" }
-    ]
-  },
-  {
-    name: "Dhaka Division",
-    image: "/images/dhaka.jpg",
-    tours: [
-      { location: "Sonargaon", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" }
-    ]
-  },
-  {
-    name: "Barisal Division",
-    image: "/images/barisal.jpg",
-    tours: [
-      { location: "Kuakata", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" }
-    ]
-  },
-  {
-    name: "Khulna Division",
-    image: "/images/khulna.jpg",
-    tours: [
-      { location: "Mongla", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" }
-    ]
-  },
-  {
-    name: "Rajshahi Division",
-    image: "/images/rajshahi.jpg",
-    tours: [
-      { location: "Naogaon", image: "https://i.ibb.co/7bQJxkQ/paharpur.jpg" }
-    ]
-  }
-];
+    {
+      name: "Chattogram Division",
+      image: "/images/chattogram.jpg",
+      tours: [
+        { location: "Bandarban", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
+        { location: "Rangamati", image: "https://i.ibb.co/Vq5KYDk/rangamati.jpg" },
+        { location: "Cox’s Bazar", image: "https://i.ibb.co/nRHvw9m/coxs1.jpg" },
+        { location: "Teknaf", image: "https://i.ibb.co/0sXLh6D/saint1.jpg" },
+      ],
+    },
+    {
+      name: "Sylhet Division",
+      image: "/images/sylhet.jpg",
+      tours: [
+        { location: "Gowainghat", image: "https://i.ibb.co/nBTRFfB/bichanakandi.jpg" },
+        { location: "Srimangal", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" },
+      ],
+    },
+    {
+      name: "Dhaka Division",
+      image: "/images/dhaka.jpg",
+      tours: [
+        { location: "Sonargaon", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" },
+      ],
+    },
+    {
+      name: "Barisal Division",
+      image: "/images/barisal.jpg",
+      tours: [
+        { location: "Kuakata", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" },
+      ],
+    },
+    {
+      name: "Khulna Division",
+      image: "/images/khulna.jpg",
+      tours: [
+        { location: "Mongla", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" },
+      ],
+    },
+    {
+      name: "Rajshahi Division",
+      image: "/images/rajshahi.jpg",
+      tours: [
+        { location: "Naogaon", image: "https://i.ibb.co/7bQJxkQ/paharpur.jpg" },
+      ],
+    },
+  ];
 
   const handleLogout = async () => {
     try {
@@ -134,7 +134,7 @@ const Navbar = () => {
               // Destinations Dropdown
               if (item.name === "Destinations") {
                 return (
-                  <div 
+                  <div
                     key={item.name}
                     className="relative group"
                     onMouseEnter={() => setIsDestinationsOpen(true)}
@@ -176,8 +176,9 @@ const Navbar = () => {
                                   onMouseEnter={() => setHoveredCountry(d.name)}
                                 >
                                   <Link
-                                    href={`/destinations/${d.name.toLowerCase()
-                                    .replace(/\s+/g, "-")}`}
+                                    href={`/destinations/${d.name
+                                      .toLowerCase()
+                                      .replace(/\s+/g, "-")}`}
                                     className={`block text-gray-700 hover:text-orange-500 transition-colors ${
                                       hoveredCountry === d.name
                                         ? "font-semibold text-orange-600"
@@ -205,7 +206,7 @@ const Navbar = () => {
                             <div className="flex flex-wrap gap-4">
                               {activeCountry.tours.map((tour) => (
                                 <Link
-                                  key={tour.name}
+                                  key={tour.location}
                                   href={`/tours/${tour.location
                                     .toLowerCase()
                                     .replace(/\s+/g, "-")}`}
@@ -278,7 +279,7 @@ const Navbar = () => {
             })}
           </nav>
 
-          {/* Right Side (User / Login) */}
+          {/* Right Side (User / Login + Mobile Menu) */}
           <div className="flex items-center gap-2 sm:gap-4 relative">
             {status === "loading" ? (
               <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse" />
@@ -362,6 +363,87 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Overlay */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            <motion.div
+              onClick={() => setIsMenuOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[250]"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="fixed top-0 right-0 w-[80%] sm:w-[60%] h-screen bg-white shadow-2xl z-[300] flex flex-col"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b">
+                <h2 className="text-xl font-semibold text-orange-500">Menu</h2>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="p-2 text-gray-700 hover:text-orange-500 transition-all"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Links */}
+              <div className="flex-1 overflow-y-auto">
+                <ul className="flex flex-col px-6 py-4 space-y-4">
+                  {navItems.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.to}
+                        onClick={() => setIsMenuOpen(false)}
+                        className={`block text-lg font-medium transition-colors ${
+                          pathname === item.to
+                            ? "text-orange-500"
+                            : "text-gray-700 hover:text-orange-500"
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Bottom Section */}
+              <div className="border-t p-6">
+                {user ? (
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-full font-semibold hover:bg-red-600 transition-all"
+                  >
+                    <LogOut className="w-4 h-4" /> Logout
+                  </button>
+                ) : (
+                  <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-2 rounded-full font-semibold hover:shadow-md transition-all"
+                    >
+                      Log In
+                    </motion.button>
+                  </Link>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
