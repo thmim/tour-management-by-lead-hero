@@ -8,7 +8,6 @@ const getToursByRegion = async (region) => {
     const client = await clientPromise;
     const db = client.db("destinationDB");
 
-    // Case-insensitive match for destination_region
     const tours = await db
       .collection("tours")
       .find({
@@ -26,92 +25,89 @@ const getToursByRegion = async (region) => {
 // ✅ Page Component
 const Page = async ({ params }) => {
   const { name } = params;
-
-  // Decode the region name (handle hyphen or URL encoding)
   const regionName = decodeURIComponent(name.replace(/-/g, " "));
-
-  console.log("Region from params:", regionName);
 
   const toursInRegion = await getToursByRegion(regionName);
 
   const destinations = [
-  {
-    name: "Chattogram Division",
-    image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg",
-  
-  },
-  {
-    name: "Dhaka Division",
-    image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg",
-   
-  },
-  {
-    name: "Sylhet Division",
-    image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg",
-  
-  },
-  {
-    name: "Khulna Division",
-    image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg",
-    
-  },
-  {
-    name: "Barisal Division",
-    image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg",
-   
-  },
-  {
-    name: "Rajshahi Division",
-    image: "https://lh3.googleusercontent.com/gps-cs-s/AG0ilSzYkwVMQEEUccGfnkqnly8weIu9nqAbK2vo-FLYzT36km7wQMKvy7pWVR0CkgEPAo3GeIFdoQrHPhlxlqpvDrx4ENCHFuU-qFSBlm-oh7CLc7jEWEOo5YS40UQuO9EPguGnoBcjitPexF6a=w540-h312-n-k-no",
-    
-  },
-  {
-    name: "Rangpur Division",
-    image: "https://i.ibb.co/LNBrTnt/tajhat-palace.jpg",
-    
-  },
-  {
-    name: "Mymensingh Division",
-    image: "https://i.ibb.co/xCjkr3F/mymensingh-town-hall.jpg",
-   
-  },
-];
+    { name: "Chattogram Division", image: "https://i.ibb.co/6Fsk5rM/bandarban-hills.jpg" },
+    { name: "Dhaka Division", image: "https://i.ibb.co/nRJPnHz/sonargaon.jpg" },
+    { name: "Sylhet Division", image: "https://i.ibb.co/1nYb2tH/tea-garden.jpg" },
+    { name: "Khulna Division", image: "https://i.ibb.co/GV8Zh9C/sundarban1.jpg" },
+    { name: "Barisal Division", image: "https://i.ibb.co/2W5VqYr/kuakata1.jpg" },
+    { name: "Rajshahi Division", image: "https://i.ibb.co.com/TD0MVj2Z/unnamed.jpg" },
+    { name: "Rangpur Division", image: "https://i.ibb.co/LNBrTnt/tajhat-palace.jpg" },
+    { name: "Mymensingh Division", image: "https://i.ibb.co/xCjkr3F/mymensingh-town-hall.jpg" },
+  ];
 
-const destinationInfo=destinations.find(dest=>dest.name.toLowerCase()===regionName);
-console.log(destinationInfo)
-
+  const destinationInfo = destinations.find(
+    (dest) => dest.name.toLowerCase() === regionName.toLowerCase()
+  );
 
   return (
-    <div className="p-8">
-       
-     
-
-      <h1 className="text-2xl font-bold mb-6 capitalize">
-        Tours in {regionName}
-      </h1>
-
-      {toursInRegion.length > 0 ? (
-        <ul className="space-y-4">
-          {toursInRegion.map((tour) => (
-            <li
-              key={tour._id}
-              className="border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all"
-            >
-              <h2 className="text-lg font-semibold">{tour.title}</h2>
-              <p className="text-sm text-gray-600">
-                Region: {tour.destination_region}
-              </p>
-              <p className="text-sm text-gray-600">
-                Location: {tour.location}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-gray-500 mt-6">
-          No tours found for this region.
-        </p>
+    <div className="flex flex-col">
+      {/* 🌄 Region Banner */}
+      {destinationInfo && (
+        <div className="relative w-full h-[60vh] rounded-b-3xl overflow-hidden shadow-lg">
+          <Image
+            src={destinationInfo.image}
+            alt={destinationInfo.name}
+            fill
+            className="object-cover brightness-75"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg text-center">
+              {destinationInfo.name}
+            </h1>
+          </div>
+        </div>
       )}
+
+      {/* 🧭 Tour List Section */}
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        <h2 className="text-3xl font-semibold text-gray-800 text-center mb-8">
+          Explore Popular Tours in {regionName}
+        </h2>
+
+        {toursInRegion.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {toursInRegion.map((tour) => (
+              <div
+                key={tour._id}
+                className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all bg-white"
+              >
+                {tour.image && (
+                  <Image
+                    src={tour.image}
+                    alt={tour.title}
+                    width={600}
+                    height={400}
+                    className="w-full h-48 object-cover"
+                  />
+                )}
+                <div className="p-5 space-y-2">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {tour.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    🗺️ {tour.location}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Region: {tour.destination_region}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center mt-10">
+            <p className="text-gray-500 text-lg">
+              No tours found for this region. Please check back later!
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
