@@ -15,7 +15,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "i.ibb.co", // ✅ Add this line
+        hostname: "i.ibb.co", 
 
       },
       { protocol: "https", hostname: "i.ibb.co.com" },
@@ -34,6 +34,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "www.gravatar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**",
       },
     ],
   },
