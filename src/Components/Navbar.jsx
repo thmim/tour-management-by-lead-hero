@@ -402,7 +402,7 @@ const destinations = [
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[250]"
+              className="fixed h-[100vh] inset-0 bg-black/40 backdrop-blur-sm z-[250]"
             />
 
             {/* Drawer */}
@@ -411,11 +411,11 @@ const destinations = [
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 right-0 w-[80%] sm:w-[60%] h-screen bg-white shadow-2xl z-[300] flex flex-col"
+              className="fixed top-0 right-0 w-[80%] sm:w-[60%] h-[100vh] bg-white shadow-2xl z-[300] flex flex-col"
             >
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-4 border-b">
-                <h2 className="text-xl font-semibold text-orange-500">Menu</h2>
+                
                 <button
                   onClick={() => setIsMenuOpen(false)}
                   className="p-2 text-gray-700 hover:text-orange-500 transition-all"
